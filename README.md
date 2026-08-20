@@ -1,28 +1,28 @@
-# ☕ WEBX — All-in-One Web
+# 🌐 WEBX — All-in-One Web
 
 **WEBX** is a premium all-in-one web workspace that unifies everyday tools — calculator, converters, timers, tasks, notes, expenses, weather, and more — into a single beautifully designed glassmorphic interface. No accounts, no tracking, no bloat. Just open and go.
 
-**Live Site:** [https://webx-all-in-one.vercel.app/](https://webx-all-in-one.vercel.app/)
+**Live Demo:** [https://webx-all-in-one.vercel.app/](https://webx-all-in-one.vercel.app/)
 
 ---
 
 ## 🌟 Project Overview
 
-WEBX was built to solve a simple problem: too many tabs. Instead of switching between a calculator, notes app, timer, converter, and to-do list, WEBX puts them all in one place. It's designed to be fast, useful, and customizable — a personal command center that lives in your browser.
+WEBX was built to solve a simple problem: **too many tabs**. Instead of switching between a calculator, notes app, timer, converter, and to-do list, WEBX puts them all in one place. It's designed to be fast, useful, and customizable — a personal command center that lives in your browser.
 
-Everything runs client-side with no backend required. User data is stored entirely in localStorage and IndexedDB, and the app works with zero API keys.
+Everything runs client-side with no backend required. User data is stored entirely in localStorage and IndexedDB, and all external APIs are keyless.
 
 ---
 
 ### **Key Features**
 
-* **Calculator:** Basic and Scientific modes with keyboard input, memory operations, history, and 20+ math functions.
-* **Unit Converter:** 16 categories including length, weight, temperature, speed, data, pressure, and more.
+* **Calculator:** Basic and Scientific modes with keyboard input, memory, history, and 20+ math functions.
+* **Unit Converter:** 16 categories — length, weight, temperature, speed, data, pressure, and more.
 * **Currency Converter:** 80+ currencies with live exchange rates and offline fallback.
 * **Tasks & Notes:** Create, filter, search, pin, and archive personal tasks and notes.
 * **Focus Mode:** Built-in Pomodoro timer with configurable sessions, automatic breaks, and daily stats.
 * **Timer & Stopwatch:** Countdown timer with presets and a full stopwatch with lap tracking.
-* **Alarms:** Set alarms with labels, repeat modes, custom uploaded ringtones, and snooze.
+* **Alarms:** Set alarms with labels, repeat modes, custom ringtones, and snooze.
 * **Weather:** Current conditions and 3-day forecast with GPS auto-detect.
 * **World Clock:** Add multiple cities with live-updating times.
 * **Expense Tracker:** Log expenses by category with monthly summaries.
@@ -45,13 +45,13 @@ Everything runs client-side with no backend required. User data is stored entire
 * **JavaScript:** Vanilla JS (~3,900 lines) using an IIFE pattern with 30+ internal modules.
 * **Tailwind CSS:** Utility classes via CDN with a custom theme configuration.
 * **Material Symbols:** Google icon font for all UI icons.
-* **Google Fonts:** Inter for body text, JetBrains Mono for code/data, Nunito for headings.
+* **Google Fonts:** Inter, Nunito, and JetBrains Mono.
 * **localStorage:** All user data persistence across 22 storage keys.
-* **IndexedDB:** Used for custom ringtone audio file uploads.
-* **Web Audio API:** Generates UI sounds and 6 built-in alarm ringtones.
-* **Canvas API:** Powers the ambient animated particle background.
+* **IndexedDB:** Custom ringtone audio file uploads.
+* **Web Audio API:** UI sounds and 6 built-in alarm ringtones.
+* **Canvas API:** Ambient animated particle background.
 * **Geolocation API:** GPS-based weather location detection.
-* **Fetch API:** Live data from Open-Meteo (weather), Open Exchange Rates (currency), and BigDataCloud (geocoding) — all keyless.
+* **Fetch API:** Live data from Open-Meteo, Open Exchange Rates, and BigDataCloud — all keyless.
 
 ---
 
@@ -77,7 +77,6 @@ No build step required. No `package.json`. No bundler. Just serve the files and 
 ## 🚀 Getting Started
 
 ```bash
-# Clone the repository
 git clone https://github.com/saiganesh-007/WEBX---ALL-IN-ONE.git
 cd WEBX---ALL-IN-ONE
 ```
@@ -97,7 +96,7 @@ npx serve .
 
 Then open **http://localhost:8080** in your browser.
 
-> **Note:** Must be served over HTTP, not opened as a local `file://` URL, due to browser security restrictions on API requests.
+> **Note:** Must be served over HTTP, not opened as a local `file://` URL.
 
 ---
 
@@ -128,6 +127,17 @@ Then open **http://localhost:8080** in your browser.
 ## 📄 License
 
 No license currently specified. All rights reserved.
+
+---
+
+## 👤 Author
+
+**Sai Ganesh**
+
+* **GitHub:** [@saiganesh-007](https://github.com/saiganesh-007)
+* **LinkedIn:** [Sai Ganesh](https://www.linkedin.com/in/saiganesh00007/)
+
+Built with ❤️ by **Sai Ganesh**.
 
 ---
 
