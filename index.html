@@ -1,0 +1,1233 @@
+﻿<!DOCTYPE html>
+<html class="dark" data-theme="dark" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>"WEBX"ALL IN ONE WEB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@450;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'primary': 'rgb(var(--tw-accent) / <alpha-value>)',
+            'on-surface': 'rgb(var(--tw-text) / <alpha-value>)',
+            'on-surface-variant': 'rgb(var(--tw-text-muted) / <alpha-value>)',
+            'surface-container': 'rgb(var(--tw-surface) / <alpha-value>)',
+            'display-bg': 'rgb(var(--tw-elevated) / <alpha-value>)',
+          },
+          fontFamily: {
+            'mono': ['JetBrains Mono', 'SF Mono', 'Fira Code', 'monospace'],
+            'code-sm': ['JetBrains Mono', 'SF Mono', 'monospace'],
+          }
+        }
+      }
+    }
+    </script>
+</head>
+<body>
+
+<div id="app-container">
+
+<canvas id="ambient-canvas"></canvas>
+<div class="ambient-orbs" aria-hidden="true">
+    <div class="ambient-orb"></div>
+    <div class="ambient-orb"></div>
+    <div class="ambient-orb"></div>
+</div>
+<div class="env-gradient" aria-hidden="true"></div>
+
+<nav class="glass-nav">
+    <div class="nav-brand" data-view-tab="dashboard">
+        <span class="material-symbols-outlined">diamond</span>
+    </div>
+    <div class="nav-links">
+        <button class="nav-link active" data-view-tab="dashboard">Home</button>
+        <button class="nav-link" data-view-tab="calculator">Calculator</button>
+        <button class="nav-link" data-view-tab="converters">Converters</button>
+        <button class="nav-link" data-view-tab="tools">Tools</button>
+        <button class="nav-link" data-view-tab="tasks">Tasks</button>
+        <button class="nav-link" data-view-tab="notes">Notes</button>
+        <button class="nav-link" data-view-tab="focus">Focus</button>
+        <button class="nav-link" data-view-tab="clock">Clock</button>
+    </div>
+    <div class="nav-actions">
+        <button class="nav-icon-btn" data-toggle="history" title="History">
+            <span class="material-symbols-outlined">history</span>
+        </button>
+        <button class="nav-icon-btn" data-open-modal="themes-modal" title="Themes">
+            <span class="material-symbols-outlined">palette</span>
+        </button>
+        <button class="nav-icon-btn" id="quick-settings-btn" title="Settings">
+            <span class="material-symbols-outlined">tune</span>
+        </button>
+        <button class="nav-icon-btn" data-open-modal="settings-modal" title="Settings">
+            <span class="material-symbols-outlined">settings</span>
+        </button>
+        <button class="nav-icon-btn" data-open-modal="help-modal" title="Help">
+            <span class="material-symbols-outlined">help</span>
+        </button>
+    </div>
+</nav>
+
+<div class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity duration-300 opacity-0" id="history-backdrop"></div>
+
+<div id="quick-settings-panel" class="hidden absolute right-4 md:right-6 top-[60px] z-50 w-72 calculator-glass rounded-2xl p-5 border border-white/10 shadow-2xl">
+    <div class="space-y-4">
+        <div>
+            <div class="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold mb-2">Themes</div>
+            <div class="grid grid-cols-6 gap-2">
+                <button class="w-8 h-8 rounded-full bg-[#2a2038] border-3 border-[#4a3d60] hover:scale-110 transition-transform" data-theme-select="dark" title="Pastel"></button>
+                <button class="w-8 h-8 rounded-full bg-[#2d1a28] border-3 border-[#6a3050] hover:scale-110 transition-transform" data-theme-select="ocean" title="Candy"></button>
+                <button class="w-8 h-8 rounded-full bg-[#1a2e20] border-3 border-[#3a6a48] hover:scale-110 transition-transform" data-theme-select="emerald" title="Mint"></button>
+                <button class="w-8 h-8 rounded-full bg-[#251c38] border-3 border-[#5040a0] hover:scale-110 transition-transform" data-theme-select="aurora" title="Lilac"></button>
+                <button class="w-8 h-8 rounded-full bg-[#302418] border-3 border-[#806040] hover:scale-110 transition-transform" data-theme-select="sunset" title="Peach"></button>
+                <button class="w-8 h-8 rounded-full bg-[#1a2838] border-3 border-[#3070a0] hover:scale-110 transition-transform" data-theme-select="cyber" title="Sky"></button>
+            </div>
+        </div>
+        <div>
+            <div class="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold mb-2">Appearance</div>
+            <div class="flex gap-1.5">
+                <button class="px-3 py-1.5 text-[11px] rounded-lg font-semibold transition-all active-mode bg-surface-container/60 border border-white/10 text-on-surface" data-appearance="dark">Dark</button>
+                <button class="px-3 py-1.5 text-[11px] rounded-lg font-semibold transition-all bg-surface-container/60 border border-white/10 text-on-surface" data-appearance="light">Light</button>
+                <button class="px-3 py-1.5 text-[11px] rounded-lg font-semibold transition-all bg-surface-container/60 border border-white/10 text-on-surface" data-appearance="system">System</button>
+            </div>
+        </div>
+        <div>
+            <div class="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold mb-2">Accent Color</div>
+            <div class="flex gap-2 items-center">
+                <button class="w-6 h-6 rounded-full bg-emerald-500 ring-2 ring-emerald-500/50 transition-all" data-accent-select="emerald" title="Emerald"></button>
+                <button class="w-6 h-6 rounded-full bg-purple-500 ring-2 ring-transparent hover:ring-purple-500/50 transition-all" data-accent-select="purple" title="Purple"></button>
+                <button class="w-6 h-6 rounded-full bg-blue-500 ring-2 ring-transparent hover:ring-blue-500/50 transition-all" data-accent-select="blue" title="Blue"></button>
+                <button class="w-6 h-6 rounded-full bg-cyan-500 ring-2 ring-transparent hover:ring-cyan-500/50 transition-all" data-accent-select="cyan" title="Cyan"></button>
+                <button class="w-6 h-6 rounded-full bg-pink-500 ring-2 ring-transparent hover:ring-pink-500/50 transition-all" data-accent-select="pink" title="Pink"></button>
+                <button class="w-6 h-6 rounded-full bg-orange-500 ring-2 ring-transparent hover:ring-orange-500/50 transition-all" data-accent-select="orange" title="Orange"></button>
+                <button class="w-6 h-6 rounded-full bg-red-500 ring-2 ring-transparent hover:ring-red-500/50 transition-all" data-accent-select="red" title="Red"></button>
+            </div>
+        </div>
+        <div class="border-t border-white/5 pt-3 space-y-2">
+            <div class="flex justify-between items-center">
+                <span class="text-xs text-on-surface">Clock Format</span>
+                <button class="px-2.5 py-1 text-[11px] rounded-lg font-mono font-semibold bg-surface-container/60 border border-white/10 text-on-surface hover:bg-white/10 transition-colors" id="qs-clock-format">24h</button>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-xs text-on-surface">Angle Mode</span>
+                <div class="flex gap-1">
+                    <button class="px-2 py-1 text-[10px] rounded font-mono font-semibold active-mode bg-surface-container/60 border border-white/10" data-angle-unit="DEG">DEG</button>
+                    <button class="px-2 py-1 text-[10px] rounded font-mono font-semibold bg-surface-container/60 border border-white/10" data-angle-unit="RAD">RAD</button>
+                    <button class="px-2 py-1 text-[10px] rounded font-mono font-semibold bg-surface-container/60 border border-white/10" data-angle-unit="GRAD">GRAD</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-xs text-on-surface">Notifications</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="qs-notifications" class="sr-only peer" checked>
+                    <div class="w-9 h-5 bg-surface-container rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white/60 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary/60"></div>
+                </label>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-xs text-on-surface">Reduce Motion</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="qs-reduce-motion" class="sr-only peer">
+                    <div class="w-9 h-5 bg-surface-container rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white/60 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary/60"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<main class="flex-grow flex flex-col lg:flex-row items-center lg:items-start justify-center p-4 md:p-6 w-full max-w-[1280px] mx-auto gap-6 relative">
+
+    <div class="view-panel active" data-view-panel="dashboard">
+        <div class="home-hero">
+            <div class="hero-time-row">
+                <span class="hero-time" id="home-time">00:00</span><span class="hero-time-sec" id="home-time-sec">:00</span>
+            </div>
+            <div class="hero-date" id="home-date"></div>
+        </div>
+        <div class="command-bar-wrapper">
+            <div class="command-bar">
+                <input class="command-bar-input" id="home-command-bar" type="text" placeholder="Search..." autocomplete="off">
+                <span class="material-symbols-outlined command-bar-icon">search</span>
+                <span class="command-bar-kbd">&#8984;K</span>
+                <div class="command-suggestions" id="home-command-suggestions"></div>
+            </div>
+        </div>
+        <div class="home-quick-actions">
+            <button class="home-quick-btn" data-dash-nav="calculator">
+                <span class="material-symbols-outlined">calculate</span>
+                <span>Calculate</span>
+            </button>
+            <button class="home-quick-btn" data-dash-nav="converters">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                <span>Convert</span>
+            </button>
+            <button class="home-quick-btn" data-dash-nav="timer">
+                <span class="material-symbols-outlined">hourglass_top</span>
+                <span>Timer</span>
+            </button>
+            <button class="home-quick-btn" data-dash-nav="stopwatch">
+                <span class="material-symbols-outlined">timer</span>
+                <span>Stopwatch</span>
+            </button>
+            <button class="home-quick-btn" data-dash-nav="alarm">
+                <span class="material-symbols-outlined">alarm</span>
+                <span>Alarm</span>
+            </button>
+            <button class="home-quick-btn" data-dash-nav="clock">
+                <span class="material-symbols-outlined">public</span>
+                <span>Clock</span>
+            </button>
+        </div>
+        <div class="home-dashboard" id="dashboard-content">
+        </div>
+    </div>
+
+    <div class="view-panel" data-view-panel="calculator">
+        <div class="calculator-glass rounded-2xl p-5 md:p-8 w-full max-w-[500px] flex flex-col gap-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <div class="flex items-center gap-1 bg-surface-container/60 p-1 rounded-lg border border-white/5">
+                    <button class="px-3 py-1 text-xs rounded-md font-semibold transition-all active-mode calc-btn-sci" data-calc-mode="basic">Basic</button>
+                    <button class="px-3 py-1 text-xs rounded-md font-semibold transition-all calc-btn-sci" data-calc-mode="scientific">Scientific</button>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button class="px-2 py-0.5 text-xs rounded font-mono font-semibold active-mode calc-btn-sci" data-angle-unit="DEG">DEG</button>
+                    <button class="px-2 py-0.5 text-xs rounded font-mono font-semibold calc-btn-sci" data-angle-unit="RAD">RAD</button>
+                    <button class="px-2 py-0.5 text-xs rounded font-mono font-semibold calc-btn-sci" data-angle-unit="GRAD">GRAD</button>
+                </div>
+            </div>
+
+            <div class="display-glass rounded-xl p-4 flex flex-col items-end justify-between relative h-36 overflow-hidden focus-within:ring-1 focus-within:ring-primary transition-shadow">
+                <div class="w-full flex justify-between items-center text-xs text-on-surface-variant mb-1">
+                    <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono text-[10px] font-bold" id="memory-badge" style="display:none;">M</span>
+                    <button aria-label="Copy Result" class="ml-auto opacity-60 hover:opacity-100 transition-opacity p-1 text-on-surface-variant hover:text-primary" id="copy-display-btn" title="Copy Result">
+                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                    </button>
+                </div>
+                <div class="font-code-sm text-code-sm text-on-surface-variant w-full text-right truncate opacity-75 tracking-wider font-mono min-h-[1.5rem]" id="history-expr"></div>
+                <div class="text-3xl md:text-4xl text-on-surface w-full text-right truncate tracking-tight font-bold font-mono" id="display">0</div>
+            </div>
+
+            <div class="grid grid-cols-5 gap-2 text-xs">
+                <button class="calc-btn calc-btn-sci py-1.5 rounded-lg text-xs" data-action="mc">MC</button>
+                <button class="calc-btn calc-btn-sci py-1.5 rounded-lg text-xs" data-action="mr">MR</button>
+                <button class="calc-btn calc-btn-sci py-1.5 rounded-lg text-xs" data-action="mplus">M+</button>
+                <button class="calc-btn calc-btn-sci py-1.5 rounded-lg text-xs" data-action="mminus">M&#8722;</button>
+                <button class="calc-btn calc-btn-sci py-1.5 rounded-lg text-xs" data-action="ms">MS</button>
+            </div>
+
+            <div class="grid grid-cols-6 gap-2 text-xs border-t border-white/10 pt-3 hidden" id="scientific-keypad">
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="sin">sin</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="cos">cos</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="tan">tan</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="asin">asin</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="acos">acos</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="atan">atan</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="sinh">sinh</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="cosh">cosh</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="tanh">tanh</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="sqrt">&#8730;x</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="cbrt">&#8731;x</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-action="square">x&#178;</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-operator="^">x&#696;</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-action="fact">x!</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="log">log</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="ln">ln</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="log2">log&#8322;</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="exp10">10^x</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-constant="&#960;">&#960;</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-constant="e">e</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-paren="(">(</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-paren=")">)</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="abs">abs</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="exp">e^x</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="floor">floor</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="ceil">ceil</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-operator="%">mod</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-action="reciprocal">1/x</button>
+                <button class="calc-btn calc-btn-sci rounded-lg py-2" data-function="round">round</button>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2.5" id="keypad-container">
+                <button aria-label="Clear All" class="calc-btn calc-btn-action text-xl rounded-xl h-14" data-action="clear">AC</button>
+                <button aria-label="Backspace" class="calc-btn calc-btn-action text-xl rounded-xl h-14" data-action="backspace">&#9003;</button>
+                <button aria-label="Percentage" class="calc-btn calc-btn-action text-xl rounded-xl h-14" data-action="percent">%</button>
+                <button aria-label="Divide" class="calc-btn calc-btn-operator text-2xl rounded-xl h-14" data-operator="/">/</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="7">7</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="8">8</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="9">9</button>
+                <button aria-label="Multiply" class="calc-btn calc-btn-operator text-2xl rounded-xl h-14" data-operator="*">&times;</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="4">4</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="5">5</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="6">6</button>
+                <button aria-label="Subtract" class="calc-btn calc-btn-operator text-2xl rounded-xl h-14" data-operator="-">&minus;</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="1">1</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="2">2</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="3">3</button>
+                <button aria-label="Add" class="calc-btn calc-btn-operator text-2xl rounded-xl h-14" data-operator="+">+</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-action="toggle-sign">&plusmn;</button>
+                <button class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-number="0">0</button>
+                <button aria-label="Decimal" class="calc-btn calc-btn-default text-xl rounded-xl h-14" data-action="decimal">.</button>
+                <button aria-label="Equals" class="calc-btn calc-btn-accent text-2xl rounded-xl h-14" data-action="calculate">=</button>
+            </div>
+        </div>
+    </div>
+    <div class="view-panel" data-view-panel="converters">
+        <div class="calculator-glass rounded-2xl p-5 md:p-8 w-full max-w-[700px] flex flex-col gap-5">
+            <h2 class="text-xl font-bold text-on-surface text-center">Converters &amp; Tools</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5 bg-surface-container/60 p-1.5 rounded-xl border border-white/5">
+                <button class="nav-tab active text-center text-[11px] py-2" data-converter-tab="unit">Unit</button>
+                <button class="nav-tab text-center text-[11px] py-2" data-converter-tab="currency">Currency</button>
+                <button class="nav-tab text-center text-[11px] py-2" data-converter-tab="percentage">Percentage</button>
+                <button class="nav-tab text-center text-[11px] py-2" data-converter-tab="datetime">Date &amp; Time</button>
+                <button class="nav-tab text-center text-[11px] py-2" data-converter-tab="weather">Weather</button>
+            </div>
+            <div class="flex flex-col gap-4" id="converter-unit-panel">
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant mb-1">Category</label>
+                    <select class="w-full bg-surface-container border border-white/10 rounded-lg p-2.5 text-on-surface text-sm" id="unit-category">
+                        <option value="length">Length</option>
+                        <option value="weight">Weight / Mass</option>
+                        <option value="temperature">Temperature</option>
+                        <option value="area">Area</option>
+                        <option value="volume">Volume</option>
+                        <option value="time">Time</option>
+                        <option value="speed">Speed</option>
+                        <option value="data">Data Storage</option>
+                        <option value="pressure">Pressure</option>
+                        <option value="energy">Energy</option>
+                        <option value="power">Power</option>
+                        <option value="angle">Angle</option>
+                        <option value="frequency">Frequency</option>
+                        <option value="force">Force</option>
+                        <option value="torque">Torque</option>
+                        <option value="fuel">Fuel Efficiency</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-center">
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-on-surface-variant mb-1">From</label>
+                        <select class="w-full bg-surface-container border border-white/10 rounded-lg p-2.5 text-on-surface" id="unit-from"></select>
+                        <input class="w-full bg-display-bg border border-white/10 rounded-lg p-3 mt-2 text-lg font-mono text-on-surface" id="unit-input" placeholder="0" type="number">
+                    </div>
+                    <div class="flex justify-center">
+                        <button aria-label="Swap" class="p-3 rounded-full bg-surface-container hover:bg-white/10 border border-white/10 text-primary" id="unit-swap-btn"><span class="material-symbols-outlined">swap_horiz</span></button>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-on-surface-variant mb-1">To</label>
+                        <select class="w-full bg-surface-container border border-white/10 rounded-lg p-2.5 text-on-surface" id="unit-to"></select>
+                        <div class="w-full bg-display-bg border border-emerald-500/30 rounded-lg p-3 mt-2 text-lg font-mono text-primary font-bold truncate" id="unit-result">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-4 hidden" id="converter-currency-panel">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-center">
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-on-surface-variant mb-1">From Currency</label>
+                        <select class="w-full bg-surface-container border border-white/10 rounded-lg p-2.5 text-on-surface text-sm" id="curr-from"></select>
+                        <input class="w-full bg-display-bg border border-white/10 rounded-lg p-3 mt-2 text-lg font-mono text-on-surface" id="curr-input" placeholder="100" type="number" value="100">
+                    </div>
+                    <div class="flex justify-center"><button aria-label="Swap" class="p-3 rounded-full bg-surface-container hover:bg-white/10 border border-white/10 text-primary" id="curr-swap-btn"><span class="material-symbols-outlined">swap_horiz</span></button></div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-on-surface-variant mb-1">To Currency</label>
+                        <select class="w-full bg-surface-container border border-white/10 rounded-lg p-2.5 text-on-surface text-sm" id="curr-to"></select>
+                        <div class="w-full bg-display-bg border border-emerald-500/30 rounded-lg p-3 mt-2 text-lg font-mono text-primary font-bold truncate" id="curr-result">0.00</div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
+                    <div class="text-xs text-on-surface-variant flex items-center gap-1.5" id="curr-status"><span>Loading...</span></div>
+                    <button class="p-1.5 px-3 rounded-lg bg-surface-container hover:bg-white/10 text-primary border border-white/10 transition-colors flex items-center gap-1.5 text-xs font-semibold" id="curr-refresh-btn"><span class="material-symbols-outlined text-sm">sync</span><span>Sync Live</span></button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4 hidden" id="converter-percentage-panel">
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-primary">What is X% of Y?</span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input class="w-24 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p1-pct" placeholder="15" type="number">
+                        <span class="text-xs text-on-surface-variant">% of</span>
+                        <input class="w-32 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p1-total" placeholder="200" type="number">
+                        <span class="text-xs text-on-surface-variant">=</span>
+                        <span class="font-mono font-bold text-primary text-lg ml-auto" id="p1-result">0</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-primary">% Change from Value 1 to Value 2</span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p2-v1" placeholder="100" type="number">
+                        <span class="text-xs text-on-surface-variant">to</span>
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p2-v2" placeholder="120" type="number">
+                        <span class="text-xs text-on-surface-variant">=</span>
+                        <span class="font-mono font-bold text-primary text-lg ml-auto" id="p2-result">0%</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-primary">Discount Calculator</span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p3-disc" placeholder="20" type="number">
+                        <span class="text-xs text-on-surface-variant">% off of</span>
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p3-total" placeholder="100" type="number">
+                        <span class="text-xs text-on-surface-variant">=</span>
+                        <span class="font-mono font-bold text-primary text-lg ml-auto" id="p3-result">0</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-primary">Tax Calculator</span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p4-tax" placeholder="8" type="number">
+                        <span class="text-xs text-on-surface-variant">% tax on</span>
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p4-total" placeholder="50" type="number">
+                        <span class="text-xs text-on-surface-variant">=</span>
+                        <span class="font-mono font-bold text-primary text-lg ml-auto" id="p4-result">0</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-primary">Tip Calculator</span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p5-tip" placeholder="18" type="number">
+                        <span class="text-xs text-on-surface-variant">% tip on</span>
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p5-total" placeholder="60" type="number">
+                        <span class="text-xs text-on-surface-variant">=</span>
+                        <span class="font-mono font-bold text-primary text-lg ml-auto" id="p5-result">0</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-primary">Profit Margin</span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p6-rev" placeholder="100" type="number">
+                        <span class="text-xs text-on-surface-variant">revenue</span>
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p6-cost" placeholder="70" type="number">
+                        <span class="text-xs text-on-surface-variant">cost =</span>
+                        <span class="font-mono font-bold text-primary text-lg ml-auto" id="p6-result">0%</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-primary">Markup Calculator</span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p7-cost" placeholder="50" type="number">
+                        <span class="text-xs text-on-surface-variant">cost</span>
+                        <input class="w-28 bg-display-bg border border-white/10 rounded-lg p-2 font-mono text-sm" id="p7-markup" placeholder="40" type="number">
+                        <span class="text-xs text-on-surface-variant">% markup =</span>
+                        <span class="font-mono font-bold text-primary text-lg ml-auto" id="p7-result">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-5 hidden" id="converter-datetime-panel">
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-3">
+                    <span class="text-xs font-semibold text-primary">Difference Between Dates</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">Start Date</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm font-mono" id="date-diff-1" type="date"></div>
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">End Date</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm font-mono" id="date-diff-2" type="date"></div>
+                    </div>
+                    <div class="text-right"><span class="text-xs text-on-surface-variant">Result: </span><span class="font-mono font-bold text-primary text-lg" id="date-diff-result">0 days</span></div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-3">
+                    <span class="text-xs font-semibold text-primary">Add / Subtract from Date</span>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">Base Date</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm font-mono" id="date-add-input" type="date"></div>
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">Amount</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm font-mono" id="date-add-num" placeholder="10" type="number" value="10"></div>
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">Unit</label>
+                            <select class="w-full bg-surface-container border border-white/10 rounded-lg p-2 text-sm" id="date-add-unit">
+                                <option value="days">Days</option><option value="weeks">Weeks</option><option value="months">Months</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-right"><span class="text-xs text-on-surface-variant">Result: </span><span class="font-mono font-bold text-primary text-lg" id="date-add-result">-</span></div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-3">
+                    <span class="text-xs font-semibold text-primary">Age Calculator</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">Date of Birth</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm font-mono" id="age-birth-date" type="date"></div>
+                        <div class="text-right"><span class="text-xs text-on-surface-variant">Age: </span><span class="font-mono font-bold text-primary text-lg" id="age-result">-</span></div>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-3">
+                    <span class="text-xs font-semibold text-primary">Business Days Between Dates</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">Start Date</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm font-mono" id="bd-date-1" type="date"></div>
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">End Date</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm font-mono" id="bd-date-2" type="date"></div>
+                    </div>
+                    <div class="text-right"><span class="text-xs text-on-surface-variant">Result: </span><span class="font-mono font-bold text-primary text-lg" id="bd-result">0 business days</span></div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-3">
+                    <span class="text-xs font-semibold text-primary">Unix Timestamp Converter</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">Unix Timestamp (seconds)</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm font-mono" id="unix-input" placeholder="1700000000" type="number"></div>
+                        <div><label class="block text-[10px] text-on-surface-variant mb-1">Human Readable</label><div class="font-mono font-bold text-primary text-sm" id="unix-result">-</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-4 hidden" id="converter-weather-panel">
+                <div class="flex gap-2">
+                    <input autocomplete="off" class="flex-1 bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="weather-city-input" list="weather-suggestions" placeholder="Search city or country..." type="text">
+                    <datalist id="weather-suggestions"></datalist>
+                    <button class="px-4 py-2.5 bg-primary text-black font-semibold rounded-lg text-xs hover:opacity-90 transition" id="weather-search-btn">Search</button>
+                    <button class="p-2.5 bg-surface-container border border-white/10 rounded-lg text-primary hover:bg-white/10 transition-colors" id="weather-geo-btn" title="Use GPS"><span class="material-symbols-outlined text-lg">my_location</span></button>
+                </div>
+                <div class="p-5 rounded-xl bg-surface-container/60 border border-white/10 flex flex-col gap-4" id="weather-card-container">
+                    <div class="text-center py-8 text-xs text-on-surface-variant animate-pulse">Loading weather...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: TOOLS -->
+    <div class="view-panel" data-view-panel="tools">
+        <div class="command-bar-wrapper">
+            <div class="command-bar">
+                <input class="command-bar-input glass-input" id="command-bar-input" type="text" placeholder="What do you want to do? Try: 25 minute timer, Stopwatch, Set alarm..." autocomplete="off">
+                <span class="material-symbols-outlined command-bar-icon">search</span>
+                <span class="command-bar-kbd">&#8984;K</span>
+                <div class="command-suggestions" id="command-suggestions"></div>
+            </div>
+        </div>
+        <div class="home-dashboard" style="max-width:800px; margin:0 auto;">
+            <div class="widget" data-view-tab="stopwatch">
+                <div class="widget-header">
+                    <span class="widget-label">Stopwatch</span>
+                    <span class="material-symbols-outlined widget-icon">timer</span>
+                </div>
+                <div class="widget-value" style="font-size:24px;">00:00.00</div>
+                <div class="widget-action">Open Stopwatch <span class="material-symbols-outlined" style="font-size:14px;">arrow_forward</span></div>
+            </div>
+            <div class="widget" data-view-tab="timer">
+                <div class="widget-header">
+                    <span class="widget-label">Timer</span>
+                    <span class="material-symbols-outlined widget-icon">hourglass_top</span>
+                </div>
+                <div class="widget-value" style="font-size:24px;">00:00:00</div>
+                <div class="widget-action">Open Timer <span class="material-symbols-outlined" style="font-size:14px;">arrow_forward</span></div>
+            </div>
+            <div class="widget" data-view-tab="alarm">
+                <div class="widget-header">
+                    <span class="widget-label">Alarm</span>
+                    <span class="material-symbols-outlined widget-icon">alarm</span>
+                </div>
+                <div class="widget-sub">No alarms set</div>
+                <div class="widget-action">Open Alarm <span class="material-symbols-outlined" style="font-size:14px;">arrow_forward</span></div>
+            </div>
+            <div class="widget" data-view-tab="clock">
+                <div class="widget-header">
+                    <span class="widget-label">World Clock</span>
+                    <span class="material-symbols-outlined widget-icon">public</span>
+                </div>
+                <div class="widget-sub">Check time worldwide</div>
+                <div class="widget-action">Open Clock <span class="material-symbols-outlined" style="font-size:14px;">arrow_forward</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: LIVE CLOCK -->
+    <div class="view-panel" data-view-panel="clock">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[500px] flex flex-col items-center gap-6">
+            <div class="text-center">
+                <div class="text-5xl md:text-6xl font-bold font-mono text-on-surface tracking-tight live-clock"></div>
+                <div class="text-2xl font-mono text-on-surface-variant mt-1 tracking-wider" id="live-seconds">:00</div>
+                <div class="text-sm text-on-surface-variant mt-2 live-date"></div>
+                <div class="text-xs text-on-surface-variant opacity-60 mt-1 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">language</span>
+                    <span class="live-tz"></span>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button id="clock-format-toggle" class="px-4 py-2 rounded-lg bg-surface-container border border-white/10 text-sm text-on-surface hover:bg-white/10 transition-colors">Toggle 12/24h</button>
+            </div>
+            <div class="w-full grid grid-cols-2 gap-3 text-center">
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5">
+                    <div class="text-[10px] text-on-surface-variant mb-1">Unix Timestamp</div>
+                    <div class="font-mono text-sm text-primary" id="unix-ts"></div>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5">
+                    <div class="text-[10px] text-on-surface-variant mb-1">UTC Offset</div>
+                    <div class="font-mono text-sm text-primary" id="utc-offset"></div>
+                </div>
+            </div>
+            <div class="w-full">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">World Clocks</span>
+                </div>
+                <div class="flex gap-2 mb-3">
+                    <input autocomplete="off" class="flex-1 bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="wc-city-input" placeholder="Add city (e.g. Tokyo, London)..." type="text">
+                    <button class="px-4 py-2.5 bg-primary text-black font-semibold rounded-lg text-xs hover:opacity-90 transition" id="wc-add-btn">Add</button>
+                </div>
+                <div class="flex flex-col gap-2 max-h-[250px] overflow-y-auto custom-scrollbar" id="world-clocks-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: STOPWATCH -->
+    <div class="view-panel" data-view-panel="stopwatch">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[500px] flex flex-col items-center gap-6">
+            <div class="text-center">
+                <div class="text-xs text-on-surface-variant mb-2 uppercase tracking-widest font-semibold" id="stopwatch-state">Ready</div>
+                <div class="text-5xl md:text-6xl font-bold font-mono text-on-surface tracking-tight" id="stopwatch-time">00:00:00.00</div>
+            </div>
+            <div class="flex gap-3 w-full justify-center flex-wrap">
+                <button id="sw-start" class="px-6 py-3 rounded-xl bg-primary text-black font-semibold text-sm hover:opacity-90 transition-colors">Start</button>
+                <button id="sw-stop" class="px-6 py-3 rounded-xl bg-surface-container border border-white/10 text-on-surface font-semibold text-sm hover:bg-white/10 transition-colors" style="display:none">Stop</button>
+                <button id="sw-resume" class="px-6 py-3 rounded-xl bg-surface-container border border-white/10 text-on-surface font-semibold text-sm hover:bg-white/10 transition-colors" style="display:none">Resume</button>
+                <button id="sw-lap" class="px-6 py-3 rounded-xl bg-surface-container border border-white/10 text-primary font-semibold text-sm hover:bg-white/10 transition-colors" style="display:none">Lap</button>
+                <button id="sw-reset" class="px-6 py-3 rounded-xl bg-surface-container border border-white/10 text-on-surface-variant font-semibold text-sm hover:bg-white/10 transition-colors" style="display:none">Reset</button>
+            </div>
+            <div class="w-full max-h-[300px] overflow-y-auto custom-scrollbar" id="stopwatch-laps"></div>
+            <button id="sw-clear-laps" class="px-4 py-2 rounded-lg border border-white/10 text-on-surface-variant hover:bg-white/5 transition-colors text-xs font-semibold hidden">Clear Laps</button>
+        </div>
+    </div>
+
+    <!-- VIEW: TIMER -->
+    <div class="view-panel" data-view-panel="timer">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[500px] flex flex-col items-center gap-6">
+            <div class="text-center">
+                <div class="text-5xl md:text-6xl font-bold font-mono text-on-surface tracking-tight" id="timer-display">00:00:00</div>
+                <div class="text-xs text-on-surface-variant mt-2 uppercase tracking-widest font-semibold" id="timer-state">Ready</div>
+                <div class="w-full h-2 bg-surface-container/60 rounded-full mt-4 overflow-hidden">
+                    <div class="h-full bg-primary rounded-full transition-all duration-300" id="timer-progress" style="width:100%"></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-3 w-full max-w-xs">
+                <div class="text-center"><label class="block text-[10px] text-on-surface-variant mb-1">Hours</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-center font-mono text-on-surface text-lg" id="timer-h" type="number" value="0" min="0" max="99"></div>
+                <div class="text-center"><label class="block text-[10px] text-on-surface-variant mb-1">Minutes</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-center font-mono text-on-surface text-lg" id="timer-m" type="number" value="5" min="0" max="59"></div>
+                <div class="text-center"><label class="block text-[10px] text-on-surface-variant mb-1">Seconds</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-center font-mono text-on-surface text-lg" id="timer-s" type="number" value="0" min="0" max="59"></div>
+            </div>
+            <div class="flex gap-3 w-full justify-center flex-wrap">
+                <button id="timer-start" class="px-6 py-3 rounded-xl bg-primary text-black font-semibold text-sm hover:opacity-90 transition-colors">Start</button>
+                <button id="timer-pause" class="px-6 py-3 rounded-xl bg-surface-container border border-white/10 text-on-surface font-semibold text-sm hover:bg-white/10 transition-colors" style="display:none">Pause</button>
+                <button id="timer-resume" class="px-6 py-3 rounded-xl bg-surface-container border border-white/10 text-on-surface font-semibold text-sm hover:bg-white/10 transition-colors" style="display:none">Resume</button>
+                <button id="timer-reset" class="px-6 py-3 rounded-xl bg-surface-container border border-white/10 text-on-surface-variant font-semibold text-sm hover:bg-white/10 transition-colors" style="display:none">Reset</button>
+            </div>
+            <div class="w-full">
+                <div class="text-xs text-on-surface-variant mb-2 font-semibold">Quick Presets</div>
+                <div class="flex flex-wrap gap-2">
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-container/60 border border-white/5 text-xs text-on-surface hover:bg-white/10 transition" data-timer-preset="0:1:0">1 min</button>
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-container/60 border border-white/5 text-xs text-on-surface hover:bg-white/10 transition" data-timer-preset="0:5:0">5 min</button>
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-container/60 border border-white/5 text-xs text-on-surface hover:bg-white/10 transition" data-timer-preset="0:10:0">10 min</button>
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-container/60 border border-white/5 text-xs text-on-surface hover:bg-white/10 transition" data-timer-preset="0:15:0">15 min</button>
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-container/60 border border-white/5 text-xs text-on-surface hover:bg-white/10 transition" data-timer-preset="0:25:0">25 min</button>
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-container/60 border border-white/5 text-xs text-on-surface hover:bg-white/10 transition" data-timer-preset="0:30:0">30 min</button>
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-container/60 border border-white/5 text-xs text-on-surface hover:bg-white/10 transition" data-timer-preset="0:45:0">45 min</button>
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-container/60 border border-white/5 text-xs text-on-surface hover:bg-white/10 transition" data-timer-preset="1:0:0">1 hr</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: ALARM -->
+    <div class="view-panel" data-view-panel="alarm">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[500px] flex flex-col items-center gap-6">
+            <div class="text-center">
+                <div class="text-3xl font-bold text-on-surface tracking-tight flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined text-primary">alarm</span>
+                    Alarms
+                </div>
+                <div class="text-xs text-on-surface-variant mt-1">Set and manage your alarms</div>
+            </div>
+            <div class="w-full flex flex-col gap-3">
+                <div class="grid grid-cols-3 gap-3 items-end">
+                    <div>
+                        <label class="block text-[10px] text-on-surface-variant mb-1">Hour</label>
+                        <input class="w-full bg-display-bg border border-white/10 rounded-lg p-3 text-center font-mono text-on-surface text-lg" id="alarm-hour" type="number" value="8" min="0" max="23" placeholder="HH">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-on-surface-variant mb-1">Minute</label>
+                        <input class="w-full bg-display-bg border border-white/10 rounded-lg p-3 text-center font-mono text-on-surface text-lg" id="alarm-min" type="number" value="0" min="0" max="59" placeholder="MM">
+                    </div>
+                    <button id="alarm-add-btn" class="h-[52px] rounded-lg bg-primary text-black font-semibold text-sm hover:opacity-90 transition-colors flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-lg">add</span> Add
+                    </button>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input class="flex-1 bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="alarm-label" type="text" placeholder="Label (optional)">
+                    <select class="bg-surface-container border border-white/10 rounded-lg p-2.5 text-xs text-on-surface" id="alarm-repeat">
+                        <option value="once">Once</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekdays">Weekdays</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label class="text-xs text-on-surface-variant">Ringtone:</label>
+                    <select class="flex-1 bg-surface-container border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="ringtone-select">
+                        <option value="default">Default</option>
+                    </select>
+                    <button class="p-2 rounded-lg bg-surface-container border border-white/10 text-primary hover:bg-white/10 transition-colors" id="ringtone-preview-btn" title="Preview ringtone"><span class="material-symbols-outlined text-sm">play_arrow</span></button>
+                    <button class="p-2 rounded-lg bg-surface-container border border-white/10 text-primary hover:bg-white/10 transition-colors" id="ringtone-upload-btn" title="Upload ringtone"><span class="material-symbols-outlined text-sm">upload</span></button>
+                    <input type="file" id="ringtone-file-input" accept="audio/*" class="hidden">
+                </div>
+            </div>
+            <div class="w-full flex flex-col gap-2 max-h-[300px] overflow-y-auto custom-scrollbar" id="alarm-list">
+                <div class="text-center py-6 text-xs text-on-surface-variant">No alarms set</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TASKS VIEW -->
+    <div class="view-panel" data-view-panel="tasks">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[600px] flex flex-col gap-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2"><h2 class="text-xl font-bold text-on-surface">Tasks</h2></div>
+                <button class="px-3 py-1.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="TasksUI.showCreate()">+ New Task</button>
+            </div>
+            <div class="flex gap-1.5 flex-wrap" id="task-filters">
+                <button class="task-filter-btn active" data-filter="all">All</button>
+                <button class="task-filter-btn" data-filter="todo">To Do</button>
+                <button class="task-filter-btn" data-filter="in_progress">In Progress</button>
+                <button class="task-filter-btn" data-filter="completed">Done</button>
+                <button class="task-filter-btn" data-filter="overdue">Overdue</button>
+            </div>
+            <div class="flex items-center gap-2">
+                <input class="flex-1 bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="task-search" type="text" placeholder="Search tasks...">
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="task-sort">
+                    <option value="created">Newest</option><option value="due">Due Date</option><option value="priority">Priority</option><option value="name">Name</option>
+                </select>
+            </div>
+            <div id="task-create-form" class="hidden">
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/10 flex flex-col gap-3">
+                    <input class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="task-title-input" type="text" placeholder="Task title" maxlength="120">
+                    <textarea class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface resize-none h-16" id="task-notes-input" placeholder="Notes (optional)"></textarea>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Due</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="task-due-input" type="date"></div>
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Priority</label><select class="w-full bg-surface-container border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="task-priority-input"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Category</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="task-category-input" type="text" placeholder="e.g. Work" maxlength="30"></div>
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button class="px-3 py-1.5 rounded-lg text-xs text-on-surface-variant hover:text-on-surface transition" onclick="TasksUI.hideCreate()">Cancel</button>
+                        <button class="px-3 py-1.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="TasksUI.saveNew()">Save Task</button>
+                    </div>
+                </div>
+            </div>
+            <div id="task-list" class="flex flex-col gap-2 max-h-[400px] overflow-y-auto custom-scrollbar">
+                <div class="text-center py-8 text-xs text-on-surface-variant/50">No tasks yet. Create one to get started.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTES VIEW -->
+    <div class="view-panel" data-view-panel="notes">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[600px] flex flex-col gap-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2"><h2 class="text-xl font-bold text-on-surface">Notes</h2></div>
+                <button class="px-3 py-1.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="NotesUI.showCreate()">+ New Note</button>
+            </div>
+            <div class="flex gap-1.5 flex-wrap">
+                <button class="task-filter-btn active" data-note-filter="all" onclick="NotesUI.setFilter('all')">All</button>
+                <button class="task-filter-btn" data-note-filter="active" onclick="NotesUI.setFilter('active')">Active</button>
+                <button class="task-filter-btn" data-note-filter="pinned" onclick="NotesUI.setFilter('pinned')">Pinned</button>
+                <button class="task-filter-btn" data-note-filter="archived" onclick="NotesUI.setFilter('archived')">Archived</button>
+            </div>
+            <input class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="note-search" type="text" placeholder="Search notes..." oninput="NotesUI.render()">
+            <div id="note-create-form" class="hidden">
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/10 flex flex-col gap-3">
+                    <input class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface font-semibold" id="note-title-input" type="text" placeholder="Note title" maxlength="100">
+                    <textarea class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface resize-none h-32" id="note-body-input" placeholder="Write your note..."></textarea>
+                    <div class="flex items-center gap-2">
+                        <input class="flex-1 bg-display-bg border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="note-tags-input" type="text" placeholder="Tags (comma separated)">
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button class="px-3 py-1.5 rounded-lg text-xs text-on-surface-variant hover:text-on-surface transition" onclick="NotesUI.hideCreate()">Cancel</button>
+                        <button class="px-3 py-1.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="NotesUI.saveNew()">Save Note</button>
+                    </div>
+                </div>
+            </div>
+            <div id="note-list" class="flex flex-col gap-2 max-h-[400px] overflow-y-auto custom-scrollbar">
+                <div class="text-center py-8 text-xs text-on-surface-variant/50">No notes yet. Jot something down.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REMINDERS VIEW -->
+    <div class="view-panel" data-view-panel="reminders">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[500px] flex flex-col gap-5">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-2xl">notifications</span><h2 class="text-xl font-bold text-on-surface">Reminders</h2></div>
+            <div id="reminder-create-form">
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/10 flex flex-col gap-3">
+                    <input class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="reminder-text-input" type="text" placeholder="Remind me to..." maxlength="200">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Hour</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-center font-mono text-sm text-on-surface" id="reminder-hour-input" type="number" value="9" min="0" max="23"></div>
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Minute</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-center font-mono text-sm text-on-surface" id="reminder-min-input" type="number" value="0" min="0" max="59"></div>
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Repeat</label><select class="w-full bg-surface-container border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="reminder-repeat-input"><option value="once">Once</option><option value="daily">Daily</option><option value="weekdays">Weekdays</option></select></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Date (optional)</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="reminder-date-input" type="date"></div>
+                    </div>
+                    <button class="w-full py-2.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="RemindersUI.save()">Add Reminder</button>
+                </div>
+            </div>
+            <div id="reminder-list" class="flex flex-col gap-2 max-h-[350px] overflow-y-auto custom-scrollbar">
+                <div class="text-center py-8 text-xs text-on-surface-variant/50">No reminders set</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOCUS VIEW -->
+    <div class="view-panel" data-view-panel="focus">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[500px] flex flex-col items-center gap-6">
+            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-2xl">psychology</span><h2 class="text-xl font-bold text-on-surface">Focus</h2></div>
+            <div class="relative w-48 h-48">
+                <svg class="w-full h-full" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6"/><circle id="focus-ring" cx="100" cy="100" r="90" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="565.48" stroke-dashoffset="0" transform="rotate(-90 100 100)" class="transition-all duration-1000"/></svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <div class="text-4xl font-bold font-mono text-on-surface" id="focus-timer-display">25:00</div>
+                    <div class="text-xs text-on-surface-variant mt-1" id="focus-mode-label">Focus Session</div>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button class="focus-duration-btn" onclick="FocusUI.setDuration(15)">15m</button>
+                <button class="focus-duration-btn active" onclick="FocusUI.setDuration(25)">25m</button>
+                <button class="focus-duration-btn" onclick="FocusUI.setDuration(45)">45m</button>
+                <button class="focus-duration-btn" onclick="FocusUI.setDuration(60)">60m</button>
+            </div>
+            <div class="flex gap-3" id="focus-controls">
+                <button class="w-14 h-14 rounded-full bg-primary text-black flex items-center justify-center hover:opacity-90 transition" onclick="FocusUI.toggle()" id="focus-play-btn"><span class="material-symbols-outlined">play_arrow</span></button>
+                <button class="w-10 h-10 rounded-full bg-surface-container border border-white/10 text-on-surface flex items-center justify-center hover:bg-white/10 transition" onclick="FocusUI.stop()" id="focus-stop-btn"><span class="material-symbols-outlined text-lg">stop</span></button>
+            </div>
+            <div class="w-full p-3 rounded-xl bg-surface-container/30 border border-white/5">
+                <div class="text-[11px] text-on-surface-variant leading-relaxed text-center">
+                    <strong class="text-on-surface">How it works:</strong> Choose a duration, press <strong>Play</strong> to start. 
+                    Pause anytime with the same button. Press <strong>Stop</strong> to end early (time is logged if over 1 min). 
+                    After each session, take a 5-minute break before starting the next one. 
+                    Your daily and weekly totals update automatically.
+                </div>
+            </div>
+            <div class="w-full grid grid-cols-3 gap-3 text-center">
+                <div class="p-3 rounded-xl bg-surface-container/40"><div class="text-lg font-bold text-primary" id="focus-today-min">0</div><div class="text-[10px] text-on-surface-variant">Minutes Today</div></div>
+                <div class="p-3 rounded-xl bg-surface-container/40"><div class="text-lg font-bold text-primary" id="focus-week-min">0</div><div class="text-[10px] text-on-surface-variant">This Week</div></div>
+                <div class="p-3 rounded-xl bg-surface-container/40"><div class="text-lg font-bold text-primary" id="focus-sessions-count">0</div><div class="text-[10px] text-on-surface-variant">Sessions</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GOALS VIEW -->
+    <div class="view-panel" data-view-panel="goals">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[600px] flex flex-col gap-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-2xl">flag</span><h2 class="text-xl font-bold text-on-surface">Goals</h2></div>
+                <button class="px-3 py-1.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="GoalsUI.showCreate()">+ New Goal</button>
+            </div>
+            <div id="goal-create-form" class="hidden">
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/10 flex flex-col gap-3">
+                    <input class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="goal-title-input" type="text" placeholder="Goal title" maxlength="120">
+                    <textarea class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface resize-none h-16" id="goal-desc-input" placeholder="Description (optional)"></textarea>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Target</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="goal-target-input" type="number" value="100" min="1"></div>
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Unit (optional)</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="goal-unit-input" type="text" placeholder="e.g. hours, km" maxlength="20"></div>
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button class="px-3 py-1.5 rounded-lg text-xs text-on-surface-variant hover:text-on-surface transition" onclick="GoalsUI.hideCreate()">Cancel</button>
+                        <button class="px-3 py-1.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="GoalsUI.saveNew()">Save Goal</button>
+                    </div>
+                </div>
+            </div>
+            <div id="goal-list" class="flex flex-col gap-3 max-h-[400px] overflow-y-auto custom-scrollbar">
+                <div class="text-center py-8 text-xs text-on-surface-variant/50">No goals yet. Set one and chase it.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPENSES VIEW -->
+    <div class="view-panel" data-view-panel="expenses">
+        <div class="calculator-glass rounded-2xl p-6 md:p-8 w-full max-w-[600px] flex flex-col gap-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-2xl">account_balance_wallet</span><h2 class="text-xl font-bold text-on-surface">Expenses</h2></div>
+                <button class="px-3 py-1.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="ExpensesUI.showCreate()">+ Add Expense</button>
+            </div>
+            <div class="p-4 rounded-xl bg-surface-container/40 border border-white/10 flex items-center justify-between">
+                <div><div class="text-[10px] text-on-surface-variant uppercase tracking-wider">This Month</div><div class="text-2xl font-bold text-primary" id="expense-month-total">$0.00</div></div>
+                <div class="text-right"><div class="text-[10px] text-on-surface-variant uppercase tracking-wider">Transactions</div><div class="text-lg font-bold text-on-surface" id="expense-month-count">0</div></div>
+            </div>
+            <div id="expense-create-form" class="hidden">
+                <div class="p-4 rounded-xl bg-surface-container/40 border border-white/10 flex flex-col gap-3">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Amount</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-sm text-on-surface font-semibold" id="expense-amount-input" type="number" step="0.01" min="0" placeholder="0.00"></div>
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Category</label><select class="w-full bg-surface-container border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="expense-category-input"><option>Food</option><option>Transport</option><option>Shopping</option><option>Entertainment</option><option>Bills</option><option>Health</option><option>Education</option><option>Other</option></select></div>
+                    </div>
+                    <input class="bg-display-bg border border-white/10 rounded-lg p-2.5 text-sm text-on-surface" id="expense-note-input" type="text" placeholder="Note (optional)" maxlength="100">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Date</label><input class="w-full bg-display-bg border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="expense-date-input" type="date"></div>
+                        <div><label class="text-[10px] text-on-surface-variant mb-1 block">Currency</label><select class="w-full bg-surface-container border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="expense-currency-input"><option>$</option><option>EUR</option><option>GBP</option><option>JPY</option></select></div>
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button class="px-3 py-1.5 rounded-lg text-xs text-on-surface-variant hover:text-on-surface transition" onclick="ExpensesUI.hideCreate()">Cancel</button>
+                        <button class="px-3 py-1.5 rounded-lg bg-primary text-black text-xs font-semibold hover:opacity-90 transition" onclick="ExpensesUI.saveNew()">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div id="expense-list" class="flex flex-col gap-2 max-h-[350px] overflow-y-auto custom-scrollbar">
+                <div class="text-center py-8 text-xs text-on-surface-variant/50">No expenses tracked this month</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div class="modal-overlay" id="search-modal">
+        <div class="modal-content mx-auto w-full max-w-lg mt-20 rounded-2xl p-4" onclick="event.stopPropagation()">
+            <div class="flex items-center gap-2 mb-3 bg-display-bg border border-white/10 rounded-xl px-3 py-2">
+                <span class="material-symbols-outlined text-on-surface-variant text-lg">search</span>
+                <input class="flex-1 bg-transparent text-on-surface text-sm outline-none" id="global-search-input" type="text" placeholder="Search tasks, notes, reminders, goals, expenses, calculations..." oninput="GlobalSearch.search(this.value)">
+                <span class="text-[10px] text-on-surface-variant bg-surface-container rounded px-1.5 py-0.5 font-mono">ESC</span>
+            </div>
+            <div id="search-results" class="max-h-[400px] overflow-y-auto custom-scrollbar">
+                <div class="text-center text-on-surface-variant opacity-50 py-12 text-xs">Type to search across tasks, notes, reminders, goals, expenses, and more</div>
+            </div>
+        </div>
+    </div>
+
+    <aside class="calculator-glass fixed right-0 top-0 h-full w-80 z-50 transform translate-x-full transition-all duration-300 ease-out rounded-2xl p-6 flex flex-col border-l border-white/10 max-h-[700px]" id="history-sidebar">
+        <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-3">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-xl">history</span>
+                <h2 class="text-lg font-bold text-on-surface">History</h2>
+            </div>
+            <button class="text-on-surface-variant hover:text-on-surface transition-colors" data-toggle="history"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar flex flex-col" id="history-log-list"></div>
+        <button class="mt-4 w-full py-2.5 rounded-lg border border-white/10 text-on-surface-variant hover:bg-white/5 hover:text-on-surface transition-colors text-xs tracking-wider font-semibold" id="clear-history-btn">CLEAR HISTORY</button>
+    </aside>
+</main>
+<footer class="glass-footer">
+    <div>&copy; 2026 Digital Workspace &bull; Premium Digital Workspace</div>
+</footer>
+
+<nav class="mobile-nav">
+    <div class="mobile-nav-items">
+        <button class="mobile-nav-item active" data-view-tab="dashboard">
+            <span class="material-symbols-outlined">home</span>
+            <span>Home</span>
+        </button>
+        <button class="mobile-nav-item" data-view-tab="calculator">
+            <span class="material-symbols-outlined">calculate</span>
+            <span>Calc</span>
+        </button>
+        <button class="mobile-nav-item" data-view-tab="converters">
+            <span class="material-symbols-outlined">swap_horiz</span>
+            <span>Convert</span>
+        </button>
+        <button class="mobile-nav-item" data-view-tab="tasks">
+            <span>Tasks</span>
+        </button>
+        <button class="mobile-nav-item" data-view-tab="tools">
+            <span class="material-symbols-outlined">construction</span>
+            <span>Tools</span>
+        </button>
+        <button class="mobile-nav-item" data-toggle="history">
+            <span class="material-symbols-outlined">history</span>
+            <span>History</span>
+        </button>
+    </div>
+</nav>
+<div class="modal-overlay" id="settings-modal">
+    <div class="modal-container p-6">
+        <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
+            <h3 class="text-xl font-bold text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-primary">settings</span> Settings</h3>
+            <button aria-label="Close" class="text-on-surface-variant hover:text-on-surface" data-close-modal><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <form class="space-y-3 text-sm custom-scrollbar overflow-y-auto pr-2 max-h-[60vh]" id="settings-form">
+            <div class="text-[10px] uppercase tracking-wider text-primary font-bold mb-1">Calculator</div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Decimal Precision</label><span class="text-[10px] text-on-surface-variant">Max decimal places</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="decimalPrecision">
+                    <option value="2">2</option><option value="4">4</option><option value="8" selected>8</option><option value="12">12</option><option value="16">16</option>
+                </select>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Thousands Separator</label><span class="text-[10px] text-on-surface-variant">Format numbers with commas</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="thousandsSeparator" type="checkbox" checked>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Show Expression</label><span class="text-[10px] text-on-surface-variant">Show equation above result</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="showExpression" type="checkbox" checked>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Keyboard Input</label><span class="text-[10px] text-on-surface-variant">Type numbers with physical keyboard</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="keyboardInput" type="checkbox" checked>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Date Format</label><span class="text-[10px] text-on-surface-variant">How dates are displayed</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="dateFormat">
+                    <option value="short">Short (MM/DD/YY)</option><option value="medium" selected>Medium (Jan 1, 2026)</option><option value="long">Long (January 1, 2026)</option>
+                </select>
+            </div>
+            <div class="text-[10px] uppercase tracking-wider text-primary font-bold mt-3 mb-1">Sound &amp; Haptics</div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Button Sound</label><span class="text-[10px] text-on-surface-variant">Click sounds when pressing buttons</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="soundEnabled" type="checkbox" checked>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Haptic Feedback</label><span class="text-[10px] text-on-surface-variant">Vibration on supported devices</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="hapticFeedback" type="checkbox">
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Timer Sound</label><span class="text-[10px] text-on-surface-variant">Sound when timer finishes</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="timerSound">
+                    <option value="default">Default</option><option value="digital">Digital</option><option value="bell">Bell</option><option value="none">None</option>
+                </select>
+            </div>
+            <div class="text-[10px] uppercase tracking-wider text-primary font-bold mt-3 mb-1">Timer &amp; Alarm</div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Default Alarm Ringtone</label><span class="text-[10px] text-on-surface-variant">Ringtone for new alarms</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="defaultAlarmRingtone">
+                    <option value="default">Default</option><option value="digital">Digital</option><option value="bell">Bell</option><option value="soft">Soft</option><option value="classic">Classic</option><option value="chime">Chime</option>
+                </select>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Snooze Duration</label><span class="text-[10px] text-on-surface-variant">Minutes when snoozing alarm</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="snoozeDuration">
+                    <option value="3">3 min</option><option value="5" selected>5 min</option><option value="10">10 min</option><option value="15">15 min</option>
+                </select>
+            </div>
+            <div class="text-[10px] uppercase tracking-wider text-primary font-bold mt-3 mb-1">Data &amp; Display</div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Save History</label><span class="text-[10px] text-on-surface-variant">Keep calculation history</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="saveHistory" type="checkbox" checked>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Max History Items</label><span class="text-[10px] text-on-surface-variant">Oldest entries removed first</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="maxHistoryItems">
+                    <option value="50">50</option><option value="100" selected>100</option><option value="200">200</option><option value="500">500</option>
+                </select>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Auto-Refresh Currency</label><span class="text-[10px] text-on-surface-variant">Update exchange rates every 5 min</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="autoRefreshCurrency" type="checkbox" checked>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Weather Unit</label><span class="text-[10px] text-on-surface-variant">Temperature display unit</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="weatherUnit">
+                    <option value="celsius">Celsius</option><option value="fahrenheit">Fahrenheit</option>
+                </select>
+            </div>
+            <div class="text-[10px] uppercase tracking-wider text-primary font-bold mt-3 mb-1">Accessibility</div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Notifications</label><span class="text-[10px] text-on-surface-variant">Alarm &amp; timer browser alerts</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="notifications" type="checkbox" checked>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Reduce Motion</label><span class="text-[10px] text-on-surface-variant">Minimize animations for comfort</span></div>
+                <input class="rounded border-white/20 text-primary focus:ring-primary" name="reduceMotion" type="checkbox">
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Animation Intensity</label><span class="text-[10px] text-on-surface-variant">Visual effect level</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="animationIntensity">
+                    <option value="off">Off</option><option value="reduced">Reduced</option><option value="normal" selected>Normal</option>
+                </select>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-white/5">
+                <div><label class="font-semibold block text-xs">Appearance</label><span class="text-[10px] text-on-surface-variant">Dark, light, or follow system</span></div>
+                <select class="bg-surface-container border border-white/10 rounded-lg p-2 text-xs" name="appearanceMode">
+                    <option value="dark">Dark</option><option value="light">Light</option><option value="system">System</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-overlay" id="themes-modal">
+    <div class="modal-container p-6">
+        <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
+            <h3 class="text-xl font-bold text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-primary">palette</span> Theme</h3>
+            <button aria-label="Close" class="text-on-surface-variant hover:text-on-surface" data-close-modal><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="theme-grid"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="profile-modal">
+    <div class="modal-container p-6">
+        <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
+            <h3 class="text-xl font-bold text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-primary">account_circle</span> Profile</h3>
+            <button aria-label="Close" class="text-on-surface-variant hover:text-on-surface" data-close-modal><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="space-y-4 text-sm custom-scrollbar overflow-y-auto max-h-[60vh] pr-2">
+            <div class="text-center py-3">
+                <div class="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center mx-auto mb-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">person</span>
+                </div>
+                <p class="text-xs text-on-surface-variant" id="profile-created-info"></p>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Display Name</label>
+                <input class="w-full bg-surface-container border border-white/10 rounded-lg p-2.5 text-on-surface" id="profile-name" type="text" placeholder="Your name" maxlength="30">
+                <p class="text-[10px] text-on-surface-variant/60 mt-1">Your display name</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant mb-1">Preferred Theme</label>
+                    <select class="w-full bg-surface-container border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="profile-theme-select">
+                        <option value="dark">Dark</option><option value="light">Light</option><option value="aurora">Aurora</option><option value="ocean">Ocean</option><option value="emerald">Emerald</option><option value="sunset">Sunset</option><option value="violet">Violet</option><option value="rose">Rose</option><option value="cyber">Cyber</option><option value="arctic">Arctic</option><option value="solar">Solar</option><option value="forest">Forest</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant mb-1">Preferred Currency</label>
+                    <select class="w-full bg-surface-container border border-white/10 rounded-lg p-2 text-xs text-on-surface" id="profile-currency-select"></select>
+                </div>
+            </div>
+            <div class="p-4 rounded-xl bg-surface-container/40 border border-white/5 flex flex-col gap-3">
+                <span class="font-semibold text-primary text-xs">Backup &amp; Restore</span>
+                <p class="text-[11px] text-on-surface-variant">Export your settings, history, and preferences as a file. You can import it later to restore everything.</p>
+                <div class="flex gap-2">
+                    <button class="flex-1 py-2 px-3 bg-primary text-black font-semibold rounded-lg text-xs hover:opacity-90 transition flex items-center justify-center gap-1" id="export-data-btn"><span class="material-symbols-outlined text-sm">download</span> Export</button>
+                    <label class="flex-1 py-2 px-3 bg-surface-container text-on-surface border border-white/10 text-center font-semibold rounded-lg text-xs hover:bg-white/10 transition cursor-pointer flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-sm">upload</span> Import<input accept=".json" class="hidden" id="import-data-file" type="file">
+                    </label>
+                </div>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/20 border border-white/5">
+                <div class="flex items-center gap-2 mb-2"><span class="material-symbols-outlined text-sm text-on-surface-variant">info</span><span class="text-xs font-semibold text-on-surface-variant">About Your Data</span></div>
+                <p class="text-[11px] text-on-surface-variant leading-relaxed">All data stays on this device. Nothing is sent to any server. If you clear your browser data, everything will be lost unless you exported first.</p>
+            </div>
+            <div class="pt-2 border-t border-white/10">
+                <button class="w-full py-2.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors font-semibold text-xs flex items-center justify-center gap-1" id="clear-all-data-btn"><span class="material-symbols-outlined text-sm">delete_forever</span> Reset All Local Data</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-overlay" id="help-modal">
+    <div class="modal-container p-6">
+        <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
+            <h3 class="text-xl font-bold text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-primary">help</span> Help</h3>
+            <button aria-label="Close" class="text-on-surface-variant hover:text-on-surface" data-close-modal><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="space-y-5 text-xs custom-scrollbar overflow-y-auto max-h-[60vh] pr-2">
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">calculate</span> Calculator</h4>
+                <p class="text-on-surface-variant leading-relaxed mb-2">Tap number buttons to type. Tap operator buttons (+, -, x, /) to build an equation. Tap = to see the answer. You can use your phone's keyboard too (go to Settings to enable it).</p>
+                <p class="text-on-surface-variant leading-relaxed">Switch between Basic and Scientific mode using the toggle above the keypad. Scientific mode adds sin, cos, tan, square root, powers, logarithms, constants, and more.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">keyboard</span> Keyboard Shortcuts</h4>
+                <div class="grid grid-cols-2 gap-1.5 font-mono text-[11px]">
+                    <div class="p-1.5 rounded bg-surface-container/50"><span class="text-primary font-bold">0-9 .</span> Numbers</div>
+                    <div class="p-1.5 rounded bg-surface-container/50"><span class="text-primary font-bold">+ - * /</span> Operators</div>
+                    <div class="p-1.5 rounded bg-surface-container/50"><span class="text-primary font-bold">Enter</span> Calculate</div>
+                    <div class="p-1.5 rounded bg-surface-container/50"><span class="text-primary font-bold">Backspace</span> Delete</div>
+                    <div class="p-1.5 rounded bg-surface-container/50"><span class="text-primary font-bold">Escape</span> Clear</div>
+                    <div class="p-1.5 rounded bg-surface-container/50"><span class="text-primary font-bold">( )</span> Parentheses</div>
+                    <div class="p-1.5 rounded bg-surface-container/50"><span class="text-primary font-bold">%</span> Percentage</div>
+                </div>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">timer</span> Stopwatch &amp; Timer</h4>
+                <p class="text-on-surface-variant leading-relaxed mb-1"><strong>Stopwatch:</strong> Tap Start to begin. While running, you can Stop (pause), Record Lap, or tap Reset when paused to zero it out.</p>
+                <p class="text-on-surface-variant leading-relaxed"><strong>Timer:</strong> Set hours, minutes, and seconds using the input fields, then tap Start. While running you can Pause. When paused, Resume or Reset. You can change the time any time by editing the inputs and tapping Start again.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">alarm</span> Alarms</h4>
+                <p class="text-on-surface-variant leading-relaxed mb-1">Set the hour and minute, optionally add a label, choose a repeat option (Once, Daily, Weekdays), pick a ringtone, and tap Add. Alarms trigger when your device's time matches.</p>
+                <p class="text-on-surface-variant leading-relaxed mb-1"><strong>Custom Ringtones:</strong> Tap the upload button to add your own audio files. They are stored locally on your device.</p>
+                <p class="text-on-surface-variant leading-relaxed"><strong>Snooze:</strong> When an alarm rings, tap Snooze to delay it by the duration set in Settings.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">swap_horiz</span> Converters &amp; Tools</h4>
+                <p class="text-on-surface-variant leading-relaxed mb-1"><strong>Unit Converter:</strong> Choose a category (Length, Weight, Temperature, etc.), then select the "from" and "to" units. Type a number to see the conversion instantly.</p>
+                <p class="text-on-surface-variant leading-relaxed mb-1"><strong>Currency Converter:</strong> Shows live exchange rates for 70+ currencies. Pick two currencies and type an amount. Rates update automatically.</p>
+                <p class="text-on-surface-variant leading-relaxed mb-1"><strong>Percentage Tools:</strong> 7 built-in calculators: What is X% of Y, Discount, Tax, Tip, Margin, Markup, and Percentage Change.</p>
+                <p class="text-on-surface-variant leading-relaxed mb-1"><strong>Date &amp; Time:</strong> Find the difference between dates, add/subtract days, calculate age, count business days, and see Unix timestamps.</p>
+                <p class="text-on-surface-variant leading-relaxed"><strong>Weather:</strong> Auto-detects your location or search any city. Shows temperature, humidity, wind, UV index, sunrise/sunset, and a 3-day forecast.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> World Clock</h4>
+                <p class="text-on-surface-variant leading-relaxed">Add any timezone to see the current time there. Tap the + button to search cities. Tap the star to save favorites. Toggle between 12h/24h format from the quick settings.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">history</span> History</h4>
+                <p class="text-on-surface-variant leading-relaxed">Every calculation is saved. Tap the history icon in the top-right to open the history panel. Tap any entry to recall it to the calculator. You can copy or delete individual entries, or clear all history at once.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">palette</span> Themes &amp; Appearance</h4>
+                <p class="text-on-surface-variant leading-relaxed mb-1">Tap the gear icon for Settings, or the palette icon for Themes. Choose from 12 built-in themes (Dark, Light, Aurora, Ocean, Emerald, Sunset, Violet, Rose, Cyber, Arctic, Solar, Forest).</p>
+                <p class="text-on-surface-variant leading-relaxed"><strong>Quick Settings:</strong> The gear icon in the header also has a quick settings panel for fast access to theme, accent color, dark/light mode, clock format, and angle unit.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5">
+                <h4 class="font-bold text-primary mb-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">backup</span> Backup &amp; Restore</h4>
+                <p class="text-on-surface-variant leading-relaxed">Go to Profile to Export all your data (settings, history, preferences) as a JSON file. You can import it later or on another device to restore everything.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-surface-container/40 border border-white/5 text-center">
+                <p class="text-on-surface-variant mb-1">Digital Workspace v4.0 &bull; Open-source &bull; No tracking &bull; No ads</p>
+                <p class="text-on-surface-variant/60 text-[10px]">Built with vanilla JavaScript. No frameworks, no dependencies, no nonsense.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-overlay" id="alarm-ringing-modal">
+    <div class="modal-container p-6 text-center">
+        <div class="flex flex-col items-center gap-6">
+            <div class="animate-bounce">
+                <span class="material-symbols-outlined text-primary" style="font-size:64px;">alarm</span>
+            </div>
+            <div>
+                <div class="text-4xl font-bold font-mono text-on-surface" id="alarm-ringing-time">08:00</div>
+                <div class="text-sm text-on-surface-variant mt-2" id="alarm-ringing-label"></div>
+            </div>
+            <div class="flex gap-4">
+                <button id="alarm-dismiss-btn" class="px-8 py-3 rounded-xl bg-primary text-black font-semibold text-sm hover:opacity-90 transition-colors">Dismiss</button>
+                <button id="alarm-snooze-btn" class="px-8 py-3 rounded-xl bg-surface-container border border-white/10 text-on-surface font-semibold text-sm hover:bg-white/10 transition-colors">Snooze</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+</div><!-- end #app-container -->
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const convTabs = document.querySelectorAll('[data-converter-tab]');
+    convTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            convTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            ['unit','currency','percentage','datetime','weather'].forEach(p => {
+                const el = document.getElementById('converter-'+p+'-panel');
+                if (el) el.classList.toggle('hidden', p !== tab.dataset.converterTab);
+            });
+        });
+    });
+
+    const sidebar = document.getElementById('history-sidebar');
+    const backdrop = document.getElementById('history-backdrop');
+    const toggleSidebar = () => {
+        const closed = sidebar.classList.contains('translate-x-full');
+        sidebar.classList.toggle('translate-x-full', !closed);
+        if (!closed) {
+            backdrop.classList.add('opacity-0');
+            setTimeout(() => backdrop.classList.add('hidden'), 300);
+        } else {
+            backdrop.classList.remove('hidden');
+            requestAnimationFrame(() => backdrop.classList.remove('opacity-0'));
+        }
+    };
+    document.querySelectorAll('[data-toggle="history"]').forEach(b => b.addEventListener('click', toggleSidebar));
+    if (backdrop) backdrop.addEventListener('click', toggleSidebar);
+
+    document.getElementById('clear-history-btn')?.addEventListener('click', () => {
+        if (confirm('Clear all calculation history?')) {
+            localStorage.removeItem('gc_history');
+            const logList = document.getElementById('history-log-list');
+            if (logList) {
+                logList.innerHTML = '<div class="text-center text-on-surface-variant opacity-50 my-auto py-12 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-3xl">history</span><span class="text-xs">No history yet</span></div>';
+            }
+            try { document.getElementById('history-sidebar')?.classList.add('translate-x-full'); } catch(e) {}
+        }
+    });
+
+    setInterval(() => {
+        const el = document.getElementById('unix-ts');
+        if (el && el.closest('[data-view-panel]')?.classList.contains('active')) {
+            el.textContent = Math.floor(Date.now() / 1000);
+        }
+        const off = document.getElementById('utc-offset');
+        if (off && off.closest('[data-view-panel]')?.classList.contains('active')) {
+            const d = new Date();
+            const mins = -d.getTimezoneOffset();
+            const h = Math.floor(Math.abs(mins) / 60);
+            const m = Math.abs(mins) % 60;
+            off.textContent = 'UTC' + (mins >= 0 ? '+' : '-') + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+        }
+    }, 1000);
+});
+</script>
+</body>
+</html>
