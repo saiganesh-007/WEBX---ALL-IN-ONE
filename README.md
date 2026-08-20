@@ -1,167 +1,127 @@
-<p align="center">
-  <img src="screen.png" alt="WEBX Preview" width="100%" style="border-radius: 12px;">
-</p>
+# ☕ WEBX — All-in-One Web
 
-<h1 align="center">🌐 WEBX — All-in-One Web</h1>
+**WEBX** is a premium all-in-one web workspace that unifies everyday tools — calculator, converters, timers, tasks, notes, expenses, weather, and more — into a single beautifully designed glassmorphic interface. No accounts, no tracking, no bloat. Just open and go.
 
-<p align="center">
-  <em>One web app. Everyday tools. One workspace.</em>
-</p>
-
-<p align="center">
-  <a href="https://webx-all-in-one.vercel.app/">🔗 Live Demo</a> &nbsp;&bull;&nbsp;
-  <a href="#-getting-started">🚀 Get Started</a> &nbsp;&bull;&nbsp;
-  <a href="https://github.com/saiganesh-007/WEBX---ALL-IN-ONE">📁 GitHub</a>
-</p>
+**Live Site:** [https://webx-all-in-one.vercel.app/](https://webx-all-in-one.vercel.app/)
 
 ---
 
-**WEBX** is an all-in-one web workspace that brings your most-used everyday tools into a single, beautifully designed application. Calculator, converters, timers, notes, tasks, expenses, weather, alarms, and more — all living in one unified interface. No accounts, no tracking, no bloat. Just open and go.
+## 🌟 Project Overview
 
-Built with vanilla HTML, CSS, and JavaScript. No frameworks. No build tools. No dependencies.
+WEBX was built to solve a simple problem: too many tabs. Instead of switching between a calculator, notes app, timer, converter, and to-do list, WEBX puts them all in one place. It's designed to be fast, useful, and customizable — a personal command center that lives in your browser.
 
----
-
-## 📌 Project Overview
-
-WEBX was built to solve a simple problem: **too many tabs**. Instead of switching between a calculator app, a notes app, a timer, a currency converter, and a to-do list — WEBX puts them all in one place.
-
-The design philosophy is straightforward:
-
-- **Simple** — clean interface, no learning curve
-- **Fast** — instant load, no build process
-- **Useful** — real tools for real tasks
-- **Customizable** — themes, accent colors, dark/light modes
-- **Unified** — everything connected through a single command bar and dashboard
+Everything runs client-side with no backend required. User data is stored entirely in localStorage and IndexedDB, and the app works with zero API keys.
 
 ---
 
-## ✨ Key Features
+### **Key Features**
 
-| Feature | Description |
-|---------|-------------|
-| 🧮 **Calculator** | Basic + Scientific modes with history, memory, and keyboard input |
-| 🔄 **Unit Converter** | 16 categories — length, weight, temperature, speed, data, and more |
-| 💱 **Currency Converter** | 80+ currencies with live exchange rates |
-| 📊 **Percentage Tools** | Discount, tax, tip, margin, markup, and % change calculators |
-| 📅 **Date & Time Tools** | Date difference, age calculator, business days, Unix timestamp converter |
-| 🌦️ **Weather** | Current conditions + 3-day forecast with GPS auto-detect |
-| ⏱️ **Stopwatch** | Start, stop, resume, and lap tracking |
-| ⏳ **Timer** | Configurable countdown with quick presets and pause/resume |
-| ⏰ **Alarms** | Set alarms with labels, repeat modes, custom ringtones, and snooze |
-| 🌍 **World Clock** | Add multiple cities, live-updating with timezone display |
-| 📝 **Notes** | Create, pin, archive, tag, and search notes |
-| ✅ **Tasks** | Manage tasks with priorities, due dates, categories, and filters |
-| 🔔 **Reminders** | Time-based reminders with browser notifications |
-| 🎯 **Goals** | Set targets and track progress over time |
-| 🍅 **Focus Mode** | Pomodoro-style sessions with break timers and daily stats |
-| 💰 **Expense Tracker** | Log expenses by category with monthly summaries |
-| 🔎 **Global Search** | Search across all your data from one place (`Ctrl+K`) |
-| 🎨 **8 Themes** | Midnight, Aurora, Ocean, Arctic, Sunset, Ember, Cyber, Minimal |
-| 🌓 **Dark / Light / System** | Full theme support with proper glassmorphism in both modes |
-| 🎯 **7 Accent Colors** | Emerald, Purple, Blue, Cyan, Pink, Orange, Red |
-| ⚙️ **18+ Settings** | Precision, sounds, haptics, animations, notifications, and more |
-| 📦 **Import / Export** | Backup and restore all your data as JSON |
-| ⌨️ **Keyboard Shortcuts** | Full calculator keyboard support + global search shortcut |
+* **Calculator:** Basic and Scientific modes with keyboard input, memory operations, history, and 20+ math functions.
+* **Unit Converter:** 16 categories including length, weight, temperature, speed, data, pressure, and more.
+* **Currency Converter:** 80+ currencies with live exchange rates and offline fallback.
+* **Tasks & Notes:** Create, filter, search, pin, and archive personal tasks and notes.
+* **Focus Mode:** Built-in Pomodoro timer with configurable sessions, automatic breaks, and daily stats.
+* **Timer & Stopwatch:** Countdown timer with presets and a full stopwatch with lap tracking.
+* **Alarms:** Set alarms with labels, repeat modes, custom uploaded ringtones, and snooze.
+* **Weather:** Current conditions and 3-day forecast with GPS auto-detect.
+* **World Clock:** Add multiple cities with live-updating times.
+* **Expense Tracker:** Log expenses by category with monthly summaries.
+* **Reminders:** Time-based reminders that fire browser notifications.
+* **Goals:** Set targets and track progress over time.
+* **Global Search:** Search across all your data from one place with Ctrl+K.
+* **8 Themes:** Midnight, Aurora, Ocean, Arctic, Sunset, Ember, Cyber, Minimal.
+* **Dark / Light / System:** Full appearance mode support with proper glassmorphism.
+* **7 Accent Colors:** Emerald, Purple, Blue, Cyan, Pink, Orange, Red.
+* **Command Bar:** Natural language input — type "2+2", "add task Buy milk", or "25 min focus".
+* **Import & Export:** Back up and restore all your data as a single JSON file.
+* **Ambient Background:** Animated canvas particle system that adapts to time of day.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology | Usage |
-|------------|-------|
-| **HTML5** | Semantic markup, 14 view panels, 6 modals |
-| **CSS3** | Glassmorphism design system, 8 themes, responsive breakpoints, 13 animations |
-| **JavaScript** | Vanilla JS, ~3,900 lines, IIFE pattern, 30+ modules |
-| **Tailwind CSS** | CDN utility classes with custom theme config |
-| **Material Symbols** | Google icon font |
-| **Google Fonts** | Inter, Nunito, JetBrains Mono |
-| **localStorage** | All user data persistence (22 keys) |
-| **IndexedDB** | Custom ringtone uploads |
-| **Web Audio API** | UI sounds and built-in ringtones |
-| **Canvas API** | Ambient animated particle background |
-| **Geolocation API** | GPS-based weather detection |
-| **Fetch API** | Live weather and currency data |
+* **HTML5:** Semantic markup with 14 view panels and 6 modals.
+* **CSS3:** Custom glassmorphism design system with 8 themes, responsive breakpoints, and 13 keyframe animations.
+* **JavaScript:** Vanilla JS (~3,900 lines) using an IIFE pattern with 30+ internal modules.
+* **Tailwind CSS:** Utility classes via CDN with a custom theme configuration.
+* **Material Symbols:** Google icon font for all UI icons.
+* **Google Fonts:** Inter for body text, JetBrains Mono for code/data, Nunito for headings.
+* **localStorage:** All user data persistence across 22 storage keys.
+* **IndexedDB:** Used for custom ringtone audio file uploads.
+* **Web Audio API:** Generates UI sounds and 6 built-in alarm ringtones.
+* **Canvas API:** Powers the ambient animated particle background.
+* **Geolocation API:** GPS-based weather location detection.
+* **Fetch API:** Live data from Open-Meteo (weather), Open Exchange Rates (currency), and BigDataCloud (geocoding) — all keyless.
+
+---
+
+## 📂 Project Structure
+
+```text
+WEBX---ALL-IN-ONE/
+├── index.html          # Main HTML — all views, modals, navigation, and markup
+├── css/
+│   └── styles.css      # Design system — themes, glassmorphism, responsive, animations
+├── js/
+│   └── app.js          # Application engine — calculator, managers, UI controllers, APIs
+├── screen.png          # Project screenshot
+├── DESIGN.md           # Design system specification document
+├── server.ps1          # Local development server (PowerShell, port 8080)
+└── .env.example        # API endpoint reference (no keys required)
+```
+
+No build step required. No `package.json`. No bundler. Just serve the files and open in a browser.
 
 ---
 
 ## 🚀 Getting Started
 
-**Prerequisites:** A modern web browser (Chrome, Firefox, Edge, Safari).
-
-### Option 1 — PowerShell (Windows)
-
-```powershell
+```bash
+# Clone the repository
 git clone https://github.com/saiganesh-007/WEBX---ALL-IN-ONE.git
 cd WEBX---ALL-IN-ONE
-.\server.ps1
 ```
 
-Opens at **http://localhost:8080**
+**Run locally (any option works):**
 
-### Option 2 — Any Static Server
+```powershell
+# PowerShell (Windows)
+.\server.ps1
 
-```bash
 # Python
 python -m http.server 8080
 
 # Node.js
 npx serve .
-
-# PHP
-php -S localhost:8080
 ```
 
-> **Note:** Must be served over HTTP (`http://localhost`), not opened as a local file (`file://`).
+Then open **http://localhost:8080** in your browser.
 
-### Option 3 — Live Demo
-
-No setup needed — just visit **[webx-all-in-one.vercel.app](https://webx-all-in-one.vercel.app/)**
-
----
-
-## 📁 Project Structure
-
-```
-WEBX---ALL-IN-ONE/
-├── index.html          # Main HTML — all views, modals, and markup
-├── css/
-│   └── styles.css      # Design system — themes, glassmorphism, responsive
-├── js/
-│   └── app.js          # Application engine — all modules and logic
-├── screen.png          # Project screenshot
-├── DESIGN.md           # Design system specification
-├── server.ps1          # Local dev server (PowerShell)
-└── .env.example        # API endpoint reference
-```
-
-**No build step.** No `package.json`. No bundler. Just open `index.html` in a browser.
+> **Note:** Must be served over HTTP, not opened as a local `file://` URL, due to browser security restrictions on API requests.
 
 ---
 
 ## 🗺️ Roadmap
 
-Potential improvements for future versions:
-
-- [ ] Graphing calculator with interactive plots
-- [ ] Rich text / Markdown notes
-- [ ] Calendar view for tasks and reminders
-- [ ] Charts and data visualization for expenses
-- [ ] PWA support for offline use
-- [ ] Custom user-created themes
-- [ ] Unit tests for core calculation logic
-- [ ] TypeScript migration
+* [ ] Graphing calculator with interactive plots
+* [ ] Rich text / Markdown note editing
+* [ ] Calendar view for tasks and reminders
+* [ ] Charts and data visualization for expenses
+* [ ] PWA support for offline use
+* [ ] Custom user-defined themes
+* [ ] Unit tests for core calculation logic
+* [ ] TypeScript migration
 
 ---
 
 ## 🙏 Acknowledgements
 
-- [Tailwind CSS](https://tailwindcss.com/) — utility-first CSS framework
-- [Google Fonts](https://fonts.google.com/) — Inter, Nunito, JetBrains Mono
-- [Material Symbols](https://fonts.google.com/icons) — icon set
-- [Open-Meteo](https://open-meteo.com/) — free weather API
-- [Open Exchange Rates](https://open.er-api.com/) — free currency API
-- [BigDataCloud](https://www.bigdatacloud.com/) — free geocoding API
+* [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS framework
+* [Google Fonts](https://fonts.google.com/) — Inter, Nunito, JetBrains Mono
+* [Material Symbols](https://fonts.google.com/icons) — Icon set
+* [Open-Meteo](https://open-meteo.com/) — Free weather and geocoding API
+* [Open Exchange Rates](https://open.er-api.com/) — Free currency exchange rate API
+* [BigDataCloud](https://www.bigdatacloud.com/) — Free reverse geocoding API
 
 ---
 
@@ -171,6 +131,4 @@ No license currently specified. All rights reserved.
 
 ---
 
-<p align="center">
-  <strong>One web app. Every tool. One workspace.</strong>
-</p>
+<p align="center"><em>One web app. Every tool. One workspace.</em></p>
